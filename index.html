@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>King Nay AI Music</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #080808;
+      color: white;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .logo {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .logo h1 {
+      font-size: 34px;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: #ff6b00;
+    }
+
+    .logo p {
+      color: #999;
+      margin-top: 8px;
+    }
+
+    .card {
+      background: #151515;
+      border: 1px solid #292929;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      color: #bbb;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    textarea,
+    select,
+    input {
+      width: 100%;
+      background: #0d0d0d;
+      color: white;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    textarea {
+      height: 130px;
+      resize: none;
+      margin-bottom: 20px;
+    }
+
+    textarea:focus,
+    select:focus,
+    input:focus {
+      border-color: #ff6b00;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
+      background: #ff6b00;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .result {
+      display: none;
+      text-align: center;
+    }
+
+    .music-icon {
+      font-size: 45px;
+      margin-bottom: 12px;
+    }
+
+    .status {
+      color: #aaa;
+      margin-top: 8px;
+    }
+
+    .footer {
+      text-align: center;
+      color: #666;
+      font-size: 12px;
+      margin: 30px 0;
+    }
+
+    @media (max-width: 500px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .logo h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="logo">
+      <h1>King Nay <span>AI Music</span></h1>
+      <p>AI music built for the Congolese sound 🇨🇩</p>
+    </div>
+
+    <div class="card">
+
+      <label>Describe your song</label>
+
+      <textarea id="prompt"
+        placeholder="Example: Romantic Congolese Rumba about falling in love, emotional guitar and beautiful sebene ending..."></textarea>
+
+      <div class="grid">
+
+        <div class="field">
+          <label>Genre</label>
+          <select id="genre">
+            <option>Congolese Rumba</option>
+            <option>Soukous</option>
+            <option>Sebene</option>
+            <option>Ndombolo</option>
+            <option>Afro-Rumba</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Language</label>
+          <select id="language">
+            <option>Lingala</option>
+            <option>Swahili</option>
+            <option>French</option>
+            <option>English</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Vocals</label>
+          <select id="vocals">
+            <option>Male</option>
+            <option>Female</option>
+            <option>Instrumental</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Mood</label>
+          <select id="mood">
+            <option>Romantic</option>
+            <option>Sad</option>
+            <option>Happy</option>
+            <option>Energetic</option>
+            <option>Emotional</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>BPM</label>
+          <input id="bpm" type="number" value="92">
+        </div>
+
+        <div class="field">
+          <label>Key</label>
+          <select id="key">
+            <option>G Minor</option>
+            <option>C Major</option>
+            <option>D Major</option>
+            <option>A Minor</option>
+            <option>E Minor</option>
+          </select>
+        </div>
+
+      </div>
+
+      <button onclick="generateSong()">
+        🎵 Generate Song
+      </button>
+
+    </div>
+
+    <div class="card result" id="result">
+
+      <div class="music-icon">🎶</div>
+
+      <h2>Your song is being prepared</h2>
+
+      <p class="status" id="status">
+        Connecting to King Nay AI...
+      </p>
+
+    </div>
+
+    <div class="footer">
+      © 2026 King Nay AI Music
+    </div>
+
+  </div>
+
+  <script>
+
+    function generateSong() {
+
+      const prompt = document.getElementById("prompt").value;
+
+      if (!prompt.trim()) {
+        alert("Please describe your song first.");
+        return;
+      }
+
+      document.getElementById("result").style.display = "block";
+
+      document.getElementById("status").innerText =
+        "AI music generation will be connected here next... 🎵";
+
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
+    }
+
+  </script>
+
+</body>
+</html>
